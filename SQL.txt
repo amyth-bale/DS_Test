@@ -1,0 +1,40 @@
+Topic - Condition + String matching + logical operator)
+
+1) select CustomerId, FirstName, LastName, City from customers
+where FirstName like 'N%' or city = "Oslo";
+
+
+2) select TrackId, Name, Composer, UnitPrice from tracks
+where UnitPrice between 0 and 3 and Composer not like '%T%';
+
+
+Topic - Group By, Order By 
+
+1) select InvoiceDate, sum(Total) as 'Sum of Total bill for that day', avg(Total) as 'Average of Total Bill for that day' from invoices
+where InvoiceDate between '2020-05-31' and '2020-07-01'
+group by InvoiceDate;
+
+
+2) select TrackId, count(TrackId) as 'Total Quantity' from invoice_items
+group by TrackId
+order by count(TrackId) desc;
+
+
+Topic - Join/Subqueries
+
+1) select ArtistId,Name from artists 
+where ArtistId not in 
+(select distinct ArtistId from albums
+where AlbumId in 
+(select distinct AlbumId from playlist_track
+inner join tracks 
+on playlist_track.TrackId = tracks.TrackId));
+
+2) select distinct albums.AlbumId,Title, count(PlaylistId) as 'Present in Playlist' from albums
+inner join tracks
+on albums.AlbumId = tracks.AlbumId
+inner join playlist_track on
+playlist_track.TrackId = tracks.TrackId
+group by albums.AlbumId
+having count(PlaylistId) > 10 ;
+
